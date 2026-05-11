@@ -17,7 +17,10 @@ app = FastAPI(
 # Allows React frontend (localhost:5173) to talk to this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+     allow_origins=[
+        "http://localhost:5173",
+        "https://inventory-management-six-eosin.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
