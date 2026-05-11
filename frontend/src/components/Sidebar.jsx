@@ -1,17 +1,18 @@
-const Sidebar = ({ page, setPage }) => {
+const Sidebar = ({ page, setPage, user, onLogout }) => {
   const links = [
-    { id: "dashboard",  label: "Dashboard",  icon: "▦" },
-    { id: "products",   label: "Products",   icon: "⬡" },
-    { id: "categories", label: "Categories", icon: "◈" },
-    { id: "suppliers",  label: "Suppliers",  icon: "⬢" },
+    { id: "dashboard", label: "Dashboard", icon: "DB" },
+    { id: "products", label: "Products", icon: "PR" },
+    { id: "categories", label: "Categories", icon: "CT" },
+    { id: "suppliers", label: "Suppliers", icon: "SP" },
   ];
 
   return (
-    <div className="sidebar">
+    <aside className="sidebar">
       <div className="sidebar-logo">
         <h1>InvenTrack</h1>
-        <span>Inventory System</span>
+        <span>Inventory Control Center</span>
       </div>
+
       <nav className="sidebar-nav">
         {links.map((link) => (
           <button
@@ -24,7 +25,15 @@ const Sidebar = ({ page, setPage }) => {
           </button>
         ))}
       </nav>
-    </div>
+
+      <div className="sidebar-user">
+        <div className="user-name">{user?.full_name}</div>
+        <div className="user-email">{user?.email}</div>
+        <button className="btn btn-ghost sidebar-logout" onClick={onLogout}>
+          Log Out
+        </button>
+      </div>
+    </aside>
   );
 };
 

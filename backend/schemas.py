@@ -1,17 +1,46 @@
-from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel, EmailStr, Field
 
 
-# ───────────────────────────── Category ─────────────────────────────
+class UserCreate(BaseModel):
+    full_name: str = Field(min_length=2, max_length=120)
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=128)
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class UserOut(BaseModel):
+    id: int
+    full_name: str
+    email: EmailStr
+    is_active: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class AuthResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserOut
+
 
 class CategoryCreate(BaseModel):
     name: str
     description: Optional[str] = None
 
+
 class CategoryUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
+
 
 class CategoryOut(BaseModel):
     id: int
@@ -23,19 +52,19 @@ class CategoryOut(BaseModel):
         from_attributes = True
 
 
-# ───────────────────────────── Supplier ─────────────────────────────
-
 class SupplierCreate(BaseModel):
     name: str
     email: Optional[str] = None
     phone: Optional[str] = None
     address: Optional[str] = None
 
+
 class SupplierUpdate(BaseModel):
     name: Optional[str] = None
     email: Optional[str] = None
     phone: Optional[str] = None
     address: Optional[str] = None
+
 
 class SupplierOut(BaseModel):
     id: int
@@ -49,8 +78,6 @@ class SupplierOut(BaseModel):
         from_attributes = True
 
 
-# ───────────────────────────── Product ──────────────────────────────
-
 class ProductCreate(BaseModel):
     name: str
     description: Optional[str] = None
@@ -60,6 +87,7 @@ class ProductCreate(BaseModel):
     category_id: Optional[int] = None
     supplier_id: Optional[int] = None
 
+
 class ProductUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
@@ -68,6 +96,7 @@ class ProductUpdate(BaseModel):
     low_stock_threshold: Optional[int] = None
     category_id: Optional[int] = None
     supplier_id: Optional[int] = None
+
 
 class ProductOut(BaseModel):
     id: int
@@ -84,12 +113,11 @@ class ProductOut(BaseModel):
         from_attributes = True
 
 
-# ───────────────────────────── StockLog ─────────────────────────────
-
 class StockLogCreate(BaseModel):
     product_id: int
-    change: int          # positive = restock, negative = sale/removal
+    change: int
     reason: Optional[str] = None
+
 
 class StockLogOut(BaseModel):
     id: int
@@ -101,8 +129,6 @@ class StockLogOut(BaseModel):
     class Config:
         from_attributes = True
 
-
-# ───────────────────────────── Dashboard ────────────────────────────
 
 class DashboardStats(BaseModel):
     total_products: int

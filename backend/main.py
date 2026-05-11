@@ -4,7 +4,7 @@ from database import engine
 import models
 from sqlalchemy.exc import SQLAlchemyError
 import logging
-from routers import products, categories, suppliers, dashboard
+from routers import auth, products, categories, suppliers, dashboard
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +27,7 @@ app.add_middleware(
 )
 
 # Registers all routers
+app.include_router(auth.router)
 app.include_router(products.router)
 app.include_router(categories.router)
 app.include_router(suppliers.router)

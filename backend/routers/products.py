@@ -2,8 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
 import crud, schemas
+from security import get_current_user
 
-router = APIRouter(prefix="/products", tags=["Products"])
+router = APIRouter(
+    prefix="/products",
+    tags=["Products"],
+    dependencies=[Depends(get_current_user)],
+)
 
 
 @router.get("/", response_model=list[schemas.ProductOut])
